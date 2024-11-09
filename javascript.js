@@ -10,29 +10,27 @@ const gameBoard = (function() {
           board[i].push(0)
         }
     }
-    console.log(board)
+    board[1][1] = 0
     function markCell(row, column) {
-        console.log(row, column)
-        console.log(board)
         if (board[row][column] === 0) {
-            return true
+            return roundCondition()
         }
     }
     
     function roundCondition() {
-        // const markedCells = board.map((row, rowIndex) => row.filter((column, columnIndex) => column === "X"))
+        const availableCells = (board.map((row, rowIndex) => (row.filter((column, columnIndex) => column === "0")).join())).join("")
         const markedCells = board.flat().map((x, xIndex) => x === "X" ? xIndex + 1 : -1).filter((x) => x!= -1).join("")
-        console.log(board)
-        console.log(markedCells)
         const winCondition = /[1-3]{3}|[4-6]{3}|[7-9]{3}|(?=.*3)(?=.*6)(?=.*9)|(?=.*2)(?=.*5)(?=.*8)|(?=.*3)(?=.*6)(?=.*9)|(?=.*1)(?=.*5)(?=.*9)|(?=.*3)(?=.*5)(?=.*7)/   
-        if (winCondition.test(markedCells)) {
-            console.log("yes")
+        
+        if (availableCells !== "") {
+            return "tie"
         }
-        // 123
-        // 456
-        // 789
-        // full
-        return markedCells
+        
+        if (winCondition.test(markedCells)) {
+            return "win"
+        }
+        
+        return "continue"
     } 
     return {
         board,
@@ -41,16 +39,29 @@ const gameBoard = (function() {
     }
 })()
 
-const gameController = (function() {
+const gameController = (function(player1Name, player2Name) {
+    let players = [
+        {name: player1Name, symbol: "X", score: 0},
+        {name: player2Name, symbol: "O", score: 0}
+    ]
     const board = gameBoard.board
-    const markCell = gameBoard.markCell
-    board[0][1] = "X"
-    board[1][1] = "X"
-    board[2][1] = "X"
-    board[0][2] = "X"
-    // if (markCell(1, 2) === true) {
-    //     board[1][2] = "X"
-    // }
-    console.log(gameBoard.board)
-    gameBoard.roundCondition()
+    let markedCell = gameBoard.markCell(1, 1)
+    let activePlayer = players[0]   
+
+    if (markedCell) {
+        let currentSymbol = players[0].symbol
+        console.log(board)
+        switch (markedCell) {
+            case "win":
+                players[0].symbol = players[1].symbol
+                players[1].symbol = currentSymbol
+                activePlayer.score++
+                break
+            case "tie":
+                players[0].symbol = players[1].symbol
+                players[1].symbol = currentSymbol
+            case "continue":
+                break
+        }
+    }
 })()
