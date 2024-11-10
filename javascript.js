@@ -2,21 +2,33 @@ const gameBoard = (function() {
     const rows = 3
     const columns = 3
     const board = []
-
-    // Creates the board cells
-    for (let i = 0; i < rows; i++) {
-        board[i] = []
-        for (let j = 0; j < columns; j++) {
-          board[i].push(0)
+    
+    function newBoard() {
+        for (let i = 0; i < rows; i++) {
+            board[i] = []
+            for (let j = 0; j < columns; j++) {
+              board[i].push(0)
+            }
         }
+        console.log(board)
     }
-    board[1][1] = 0
-    function markCell(row, column) {
-        if (board[row][column] === 0) {
+
+    function markCell(index, symbol) {
+        if (board.flat()[index] === 0) {        
+            if (index < 3) {
+                board[0][index] = symbol
+            }
+            else if (index < 6) {
+                board[1][index - 3] = symbol
+            }
+            else if (index < 9) {
+                board[2][index - 6] = symbol
+            }
+            console.log(board)
             return roundCondition()
         }
     }
-    
+
     function roundCondition() {
         const availableCells = (board.map((row, rowIndex) => (row.filter((column, columnIndex) => column === "0")).join())).join("")
         const markedCells = board.flat().map((x, xIndex) => x === "X" ? xIndex + 1 : -1).filter((x) => x!= -1).join("")
@@ -29,39 +41,74 @@ const gameBoard = (function() {
         if (winCondition.test(markedCells)) {
             return "win"
         }
-        
         return "continue"
     } 
     return {
-        board,
         markCell,
-        roundCondition
+        newBoard
     }
 })()
 
-const gameController = (function(player1Name, player2Name) {
+const gameController = (function() {
+    const buttons = (document.querySelectorAll(".buttons > button"))
     let players = [
-        {name: player1Name, symbol: "X", score: 0},
-        {name: player2Name, symbol: "O", score: 0}
+        {name: "player1", symbol: "X", score: 0},
+        {name: "player2", symbol: "O", score: 0}
     ]
-    const board = gameBoard.board
-    let markedCell = gameBoard.markCell(1, 1)
-    let activePlayer = players[0]   
+    let activePlayer = players[0]
 
-    if (markedCell) {
-        let currentSymbol = players[0].symbol
-        console.log(board)
-        switch (markedCell) {
-            case "win":
-                players[0].symbol = players[1].symbol
-                players[1].symbol = currentSymbol
-                activePlayer.score++
-                break
-            case "tie":
-                players[0].symbol = players[1].symbol
-                players[1].symbol = currentSymbol
-            case "continue":
-                break
+    function start(player1Name, player2Name) {
+        players[0].name = player1Name
+        players[1].name = player2Name
+        gameBoard.newBoard()
+        console.log(`${players[0].name} = ${players[0].symbol}`)
+        console.log(`${players[1].name} = ${players[1].symbol}`)
+        buttonControls()
+    }
+
+    function pickedCell(index) {
+        let currentSymbol = activePlayer.symbol
+        const markedCell = gameBoard.markCell(index, currentSymbol)
+        if (markedCell) {
+            switch (markedCell) {
+                case "win":
+                    players[0].symbol = players[1].symbol
+                    players[1].symbol = currentSymbol
+                    activePlayer.score++
+                    gameBoard.newBoard()
+                    console.log(`${activePlayer.name} wins`)
+                    console.log(`${players[0].name} = ${players[0].symbol}`)
+                    console.log(`${players[1].name} = ${players[1].symbol}`)
+                    console.log(`${activePlayer.name} turn`)
+                    break
+                case "tie":
+                    players[0].symbol = players[1].symbol
+                    players[1].symbol = currentSymbol
+                    gameBoard.newBoard()
+                    console.log(`It's a tie!`)
+                    console.log(`${players[0].name} = ${players[0].symbol}`)
+                    console.log(`${players[1].name} = ${players[1].symbol}`)
+                    console.log(`${activePlayer.name} turn`)
+                    break
+                case "continue":
+                    if (activePlayer === players[0]) {activePlayer = players[1]}
+                    else if (activePlayer === players[1]) {activePlayer = players[0]}
+                    console.log(`${activePlayer.name} turn`)
+                    break
+            }
         }
     }
+
+    function buttonControls() {
+        [...buttons].forEach((element, index) => {
+            element.addEventListener('click', () => {
+              pickedCell(index)
+            })
+          })
+    }
+    return {
+        start
+    }
 })()
+
+gameController.start("TheBoi", "TheGurl")
