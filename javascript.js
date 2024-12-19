@@ -10,6 +10,7 @@ const gameBoard = (function() {
               board[i].push(0)
             }
         }
+        displayController.displayBoard(board.flat())
         console.log(board)
     }
 
@@ -25,21 +26,21 @@ const gameBoard = (function() {
                 board[2][index - 6] = symbol
             }
             console.log(board)
-            return roundCondition()
+            displayController.displayBoard(board.flat())
+            return roundCondition(symbol)
         }
     }
 
-    function roundCondition() {
-        const availableCells = (board.map((row, rowIndex) => (row.filter((column, columnIndex) => column === "0")).join())).join("")
-        const markedCells = board.flat().map((x, xIndex) => x === "X" ? xIndex + 1 : -1).filter((x) => x!= -1).join("")
-        const winCondition = /[1-3]{3}|[4-6]{3}|[7-9]{3}|(?=.*3)(?=.*6)(?=.*9)|(?=.*2)(?=.*5)(?=.*8)|(?=.*3)(?=.*6)(?=.*9)|(?=.*1)(?=.*5)(?=.*9)|(?=.*3)(?=.*5)(?=.*7)/   
-        
-        if (availableCells !== "") {
-            return "tie"
-        }
-        
+    function roundCondition(symbol) {
+        const availableCells = board.flat().map((x, xIndex) => x === 0 ? xIndex + 1 : -1).filter((x) => x!= -1).join("")
+        const markedCells = board.flat().map((x, xIndex) => x === symbol ? xIndex + 1 : -1).filter((x) => x!= -1).join("")
+        const winCondition = /[1-3]{3}|[4-6]{3}|[7-9]{3}|(?=.*1)(?=.*4)(?=.*7)|(?=.*2)(?=.*5)(?=.*8)|(?=.*3)(?=.*6)(?=.*9)|(?=.*1)(?=.*5)(?=.*9)|(?=.*3)(?=.*5)(?=.*7)/   
         if (winCondition.test(markedCells)) {
             return "win"
+        }
+        
+        if (!availableCells) {
+            return "tie"
         }
         return "continue"
     } 
@@ -67,35 +68,23 @@ const gameController = (function() {
     }
 
     function pickedCell(index) {
-        let currentSymbol = activePlayer.symbol
-        const markedCell = gameBoard.markCell(index, currentSymbol)
+        const markedCell = gameBoard.markCell(index, activePlayer.symbol)
         if (markedCell) {
             switch (markedCell) {
-                case "win":
-                    players[0].symbol = players[1].symbol
-                    players[1].symbol = currentSymbol
-                    activePlayer.score++
-                    gameBoard.newBoard()
-                    console.log(`${activePlayer.name} wins`)
-                    console.log(`${players[0].name} = ${players[0].symbol}`)
-                    console.log(`${players[1].name} = ${players[1].symbol}`)
-                    console.log(`${activePlayer.name} turn`)
-                    break
                 case "tie":
-                    players[0].symbol = players[1].symbol
-                    players[1].symbol = currentSymbol
                     gameBoard.newBoard()
                     console.log(`It's a tie!`)
-                    console.log(`${players[0].name} = ${players[0].symbol}`)
-                    console.log(`${players[1].name} = ${players[1].symbol}`)
-                    console.log(`${activePlayer.name} turn`)
                     break
-                case "continue":
-                    if (activePlayer === players[0]) {activePlayer = players[1]}
-                    else if (activePlayer === players[1]) {activePlayer = players[0]}
-                    console.log(`${activePlayer.name} turn`)
+                case "win":
+                    activePlayer.score++
+                    gameBoard.newBoard()
+                    console.log(`${activePlayer.name} wins`) 
                     break
             }
+
+            if (activePlayer === players[0]) {activePlayer = players[1]}
+            else if (activePlayer === players[1]) {activePlayer = players[0]}
+            console.log(`${activePlayer.name} turn`)
         }
     }
 
@@ -108,6 +97,18 @@ const gameController = (function() {
     }
     return {
         start
+    }
+})()
+
+const displayController = (function() {
+    const buttons = document.querySelectorAll(".buttons button")
+    function displayBoard(board) {
+        for (let i = 0; i < board.length; i++) {
+            buttons[i].textContent = board[i]
+        }
+    }
+    return {
+        displayBoard
     }
 })()
 
