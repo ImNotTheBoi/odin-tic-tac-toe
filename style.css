@@ -105,9 +105,9 @@ header .main img {
 }
 
 .interface .cross {
-  width: 3.4em;
-  height: 3.4em;
-  margin-top: -0.3em;
+  width: 3.8em;
+  height: 3.8em;
+  margin-top: -0.5em;
 }
 
 .playerUI {
@@ -179,6 +179,7 @@ header .main img {
 .buttons button {
   display: flex;
   justify-content: center;
+  align-items: center;
   appearance: none;
   border: 0.1em solid #A5B4FC;
   margin-left: -0.1em;
@@ -187,6 +188,10 @@ header .main img {
   font-size: 2.5rem;
 }
 
+.buttons .cross {
+  width: 1.4em;
+}
+
 .buttons .circle2 {
-  width: 1.2em;
+  width: 1em;
 }
