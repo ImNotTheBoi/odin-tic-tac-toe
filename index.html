@@ -4,10 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ropa+Sans:ital@0;1&display=swap" rel="stylesheet">
     <script src="javascript.js" defer></script>
     <title>Document</title>
 </head>
 <body>
+    <header>  
+        <div class="main">
+            <div class="hero-text">Tic Tac Toe</div>
+            <img src="svg/circle.svg" alt="circle" class="circle">
+        </div>
+    </header>
+    <section class="interface">
+        <div class="playerUI">
+            <div class="player1Name"></div>
+            <input type="text" class="player1Input" maxlength="15">
+            <img src="svg/x.svg" alt="circle" class="cross">
+        </div>
+        <div class="mainUI"> 
+            <div class="bo3">First to 3</div>
+            <div class="scoreUI">
+                <div class="player1Score">0</div>
+                <div>-</div>
+                <div class="player2Score">0</div>
+            </div>
+            <button class="startButton">Start</button>
+        </div>
+        <div class="playerUI">
+            <div class="player2Name"></div>
+            <input type="text" class="player2Input" maxlength="15">
+            <img src="svg/circle2.svg" alt="circle" class="circle2">
+        </div>
+    </section>
     <section class="buttons">
         <button disabled="true">1</button>
         <button disabled="true">2</button>
@@ -19,12 +49,5 @@
         <button disabled="true">8</button>
         <button disabled="true">9</button>
     </section>
-    <div class="player1Name"></div>
-    <div class="player1Score">0</div>
-    <div class="player2Name"></div>
-    <div class="player2Score">0</div>
-    <input type="text" class="player1Input">
-    <input type="text" class="player2Input">
-    <button class="startButton">Start</button>
 </body>
 </html>

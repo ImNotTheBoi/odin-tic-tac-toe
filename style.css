@@ -1,5 +1,192 @@
+/*
+  Josh's Custom CSS Reset
+  https://www.joshwcomeau.com/css/custom-css-reset/
+*/
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: #A5B4FC;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+#root,
+#__next {
+  isolation: isolate;
+}
+
+
+:root {
+  font-size: 2.5vh;
+  color: #1e293b;
+  font-family: "Ropa Sans", sans-serif;
+  color: #A5B4FC;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: #F1F5F9;
+  gap: 1em;
+}
+
+header {
+  display: flex;
+  justify-content: center;
+  background-color: #A5B4FC;
+  width: 100%;
+  height: 4em;
+  padding: 0.6em;
+  box-shadow: 0.3em -0.1em 0.3em black;
+}
+
+header .main {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+header .hero-text {
+  font-size: 2rem;
+  color: #F1F5F9;
+}
+
+header .main img {
+  width: 2em;
+  height: 2em;
+}
+
+.interface {
+  display: flex;
+  gap: 1em;
+}
+
+.interface img {
+  width: 3em;
+  height: 3em;
+}
+
+.interface .cross {
+  width: 3.4em;
+  height: 3.4em;
+  margin-top: -0.3em;
+}
+
+.playerUI {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.playerUI input {
+  appearance: none;
+  background-color: #0000;
+  border: #A5B4FC .2em solid;
+  border-radius: .3em;
+  width: min(180px, 30vw);
+  text-align: center;
+}
+
+.player1Name,
+.player2Name {
+  width: min(180px 30vw);
+  text-align: center;
+}
+
+.activePlayer {
+  border: #A5B4FC .2em solid;
+  border-radius: .3em;
+  padding: 0em 1em;
+}
+
+.mainUI {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.bo3 {
+  margin-bottom: -.7em;
+}
+
+.scoreUI {
+  display: flex;
+  justify-content: space-between;
+}
+
+.scoreUI div {
+  font-size: 3rem;
+  color: #A5B4FC;
+}
+
+.startButton {
+  appearance: none;
+  background-color: #0000;
+  border: #A5B4FC .2em solid;
+  border-radius: 3em;
+  margin-top: auto;
+  width: 6em;
+}
+
 .buttons {
-    display: grid;
-    grid-template-columns: repeat(3, 80px);
-    grid-template-rows: repeat(3, 80px)
+  display: grid;
+  grid-template-columns: repeat(3, 80px);
+  grid-template-rows: repeat(3, 80px);
+  margin-left: 0.1em;
+  margin-top: 0.1em;
+}
+
+.buttons button {
+  display: flex;
+  justify-content: center;
+  appearance: none;
+  border: 0.1em solid #A5B4FC;
+  margin-left: -0.1em;
+  margin-top: -0.1em;
+  background-color: #0000;
+  font-size: 2.5rem;
+}
+
+.buttons .circle2 {
+  width: 1.2em;
 }

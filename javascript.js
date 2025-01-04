@@ -103,6 +103,7 @@ const gameController = (function () {
             if (activePlayer === players[0]) { activePlayer = players[1] }
             else if (activePlayer === players[1]) { activePlayer = players[0] }
             console.log(`${activePlayer.name} turn`)
+            displayController.displayActivePlayer()
         }
 
         else {
@@ -123,21 +124,28 @@ const gameController = (function () {
 
     return {
         start,
-        restart
+        restart,
     }
 })()
 
 const displayController = (function () {
+    const cross = document.querySelector(".cross")
+    const circle = document.querySelector(".circle2")
     const buttons = document.querySelectorAll(".buttons button")
     const player1 = document.querySelector(".player1Name")
     const player2 = document.querySelector(".player2Name")
     const player1Score = document.querySelector(".player1Score")
     const player2Score = document.querySelector(".player2Score")
     const startButton = document.querySelector(".startButton")
+    const player1Input = document.querySelector(".player1Input")
+    const player2Input = document.querySelector(".player2Input")
 
     function displayBoard(board) {
         for (let i = 0; i < board.length; i++) {
-            buttons[i].textContent = board[i]
+            buttons[i].textContent = ""
+            if (board[i] == "X") {const cloneCross = cross.cloneNode(true); buttons[i].appendChild(cloneCross)}
+            if (board[i] == "O") {const cloneCircle = circle.cloneNode(true); buttons[i].appendChild(cloneCircle)}
+            if (board[i] == "0") {buttons[i].textContent = ""}
         }
     }
 
@@ -156,19 +164,31 @@ const displayController = (function () {
         }
     }
 
+    function displayActivePlayer() {
+        player1.classList.toggle("activePlayer")
+        player2.classList.toggle("activePlayer")
+    }
+
     function setupStartButton() {
         startButton.addEventListener('click', () => {
             if (startButton.textContent == "Restart") {
                 gameController.restart()
                 startButton.textContent = "Start"
+                player1Input.style.display = "block"
+                player2Input.style.display = "block"
+                player1.textContent = ""
+                player2.textContent = ""
+                player1.classList.remove("activePlayer")
+                player2.classList.remove("activePlayer")
             }
-            else {
-                let player1Name = document.querySelector(".player1Input").value
-                let player2Name = document.querySelector(".player2Input").value
-                player1.textContent = player1Name
-                player2.textContent = player2Name
+            else {               
+                player1.textContent = player1Input.value
+                player2.textContent = player2Input.value
+                player1.classList.toggle("activePlayer")
                 startButton.textContent = "Restart"
-                gameController.start(player1Name, player2Name)
+                gameController.start(player1Input.value, player2Input.value)
+                player1Input.style.display = "none"
+                player2Input.style.display = "none"
             }
         })
     }
@@ -177,6 +197,7 @@ const displayController = (function () {
 
     return {
         displayBoard,
-        displayScore
+        displayScore,
+        displayActivePlayer
     }
 })()
